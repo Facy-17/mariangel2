@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Para Marianela — Con Amor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fdf6f8, #fce4ec);
+      color: #5d0036;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      padding: 15px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .header {
+      padding: 30px 20px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      margin-bottom: 25px;
+      color: #880e4f;
+      text-shadow: 1px 2px 4px rgba(0,0,0,0.06);
+      letter-spacing: 1px;
+    }
+
+    .quote-box {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 24px;
+      padding: 28px;
+      margin: 30px auto;
+      max-width: 580px;
+      box-shadow: 0 8px 24px rgba(216, 27, 96, 0.08);
+      position: relative;
+      border: 1px solid rgba(236, 64, 122, 0.15);
+    }
+
+    .quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      line-height: 1.55;
+      color: #4a0033;
+      font-weight: 500;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    .puzzle-section {
+      margin: 40px auto;
+      max-width: 580px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+      border: 1px solid rgba(236, 64, 122, 0.1);
+    }
+
+    .puzzle-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: #880e4f;
+    }
+
+    .slider-container {
+      position: relative;
+      height: 70px;
+      background: #f5f5f5;
+      border-radius: 40px;
+      margin: 25px auto;
+      max-width: 400px;
+      overflow: hidden;
+      border: 2px solid #ffc1d1;
+    }
+
+    .slider-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      transform: translateY(-50%);
+      background: #ffe0e9;
+    }
+
+    .slider-handle {
+      position: absolute;
+      top: 50%;
+      left: 8px;
+      width: 54px;
+      height: 54px;
+      background: #d81b60;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: grab;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(216, 27, 96, 0.4);
+      user-select: none;
+    }
+
+    .unlock-message {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: #c2185b;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      min-height: 2.2rem;
+    }
+
+    .unlock-message.show {
+      opacity: 1;
+    }
+
+    .drawing-section {
+      margin-top: 40px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid rgba(236, 64, 122, 0.1);
+    }
+
+    .drawing-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      margin-bottom: 15px;
+      color: #880e4f;
+    }
+
+    canvas {
+      background: white;
+      border-radius: 16px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.08);
+      touch-action: none;
+      width: 100%;
+      height: 320px;
+      display: block;
+      margin-top: 10px;
+    }
+
+    #previewImage {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-top: 15px;
+      display: none;
+    }
+
+    .btn-group {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 10px;
+    }
+
+    .action-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      min-width: 160px;
+    }
+
+    .clear-btn { background: #f8bbd0; color: #880e4f; }
+    .save-btn { background: #e1bee7; color: #6a1b9a; }
+    .whatsapp-btn { background: #25D366; color: white; }
+    .view-btn { background: #b39ddb; color: white; }
+
+    .action-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+    .action-btn:active { transform: translateY(0); }
+
+    .instructions {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: #880e4f;
+      font-style: italic;
+      padding: 0 10px;
+    }
+
+    .signature {
+      margin-top: 30px;
+      font-size: 1.25rem;
+      color: #c2185b;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .instagram {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #880e4f;
+      font-weight: 500;
+    }
+
+    .kiss, .flower-grow {
+      position: absolute;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    body { -webkit-user-select: none; user-select: none; }
+
+    @media (max-width: 480px) {
+      .btn-group { flex-direction: column; align-items: center; }
+      .action-btn { width: 90%; max-width: 300px; }
+      h1 { font-size: 2.2rem; }
+      .quote { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🌹 Para Marianela, con todo mi amor ❤️</h1>
+    <div class="quote-box">
+      <div class="quote" id="dynamic-quote">
+        Cada beso tuyo es una semilla de amor que florece en mi corazón.
+      </div>
+    </div>
+
+    <div class="puzzle-section">
+      <div class="puzzle-title">🌸 ¿Sabes qué siento por ti?</div>
+      <div class="slider-container" id="sliderContainer">
+        <div class="slider-track"></div>
+        <div class="slider-handle" id="sliderHandle">→</div>
+      </div>
+      <div class="unlock-message" id="unlockMessage">
+        Te quiero.
+      </div>
+    </div>
+
+    <div class="signature">Con eterno cariño,<br><strong>Jamil</strong></div>
+    <div class="instagram">✨ @facy_17 ✨</div>
+  </div>
+
+  <div class="drawing-section">
+    <div class="drawing-title">✏️ Dibuja tu flor para mí</div>
+    <canvas id="drawingCanvas"></canvas>
+    <img id="previewImage" alt="Tu flor" />
+
+    <div class="btn-group">
+      <button class="action-btn clear-btn" id="clearBtn">Borrar todo</button>
+      <button class="action-btn view-btn" id="viewBtn">Ver mi flor</button>
+      <button class="action-btn whatsapp-btn" id="whatsappBtn">📱 Enviar a Facy</button>
+    </div>
+
+    <div class="instructions" id="instructions">
+      👉 Después de dibujar, toca "Ver mi flor", luego <strong>mantén presionada la imagen</strong> y selecciona "Guardar en Fotos".
+    </div>
+  </div>
+
+  <script>
+    // === Frases ===
+    const quotes = [
+      "Tu beso es el rocío que hace florecer los jardines de mi alma. 💋🌸",
+      "En cada latido de mi corazón, hay un beso guardado solo para ti. ❤️💋",
+      "Eres la rosa que nunca se marchita en el jardín de mis sueños. 🌹💕",
+      "Contigo, hasta el silencio se llena de besos y pétalos. 💐💋",
+      "Mi amor por ti crece como una flor bajo la luz de tus ojos. 🌺❤️",
+      "Si te beso, el mundo entero se llena de primavera. 💋🌷",
+      "Eres el jardín donde mi corazón encuentra paz… y besos sin fin. 🌸💖",
+      "Cada vez que sonríes, caen pétalos de amor sobre mi vida. 🌹💋",
+      "Tu abrazo es mi refugio, tu beso, mi eterna primavera. ❤️💐",
+      "Dibujaría mil flores… pero ninguna es tan hermosa como tú. 🌺💋",
+      "En tu mirada florecen los besos que mi alma anhela. 💕🌸",
+      "Eres el milagro que hace que mi corazón lata en colores. ❤️🌹"
+    ];
+
+    const quoteEl = document.getElementById('dynamic-quote');
+    let idx = 0;
+    setInterval(() => {
+      quoteEl.style.opacity = 0;
+      setTimeout(() => {
+        idx = (idx + 1) % quotes.length;
+        quoteEl.textContent = quotes[idx];
+        quoteEl.style.opacity = 1;
+      }, 400);
+    }, 7000);
+
+    // === Vibración ===
+    function triggerVibration() {
+      if ('vibrate' in navigator) {
+        navigator.vibrate([100, 50, 100]);
+      }
+    }
+
+    // === Slider ===
+    const sliderContainer = document.getElementById('sliderContainer');
+    const sliderHandle = document.getElementById('sliderHandle');
+    const unlockMessage = document.getElementById('unlockMessage');
+    let isDragging = false;
+    let unlocked = false;
+
+    const updateSlider = (x) => {
+      if (unlocked) return;
+      const rect = sliderContainer.getBoundingClientRect();
+      const maxX = rect.width - sliderHandle.offsetWidth;
+      const newPos = Math.min(Math.max(0, x - rect.left - sliderHandle.offsetWidth / 2), maxX);
+      sliderHandle.style.left = newPos + 'px';
+
+      if (newPos >= maxX - 5) {
+        unlocked = true;
+        unlockMessage.classList.add('show');
+        sliderHandle.innerHTML = '✓';
+        sliderHandle.style.background = '#4caf50';
+        triggerVibration();
+      }
+    };
+
+    const handleStart = (clientX) => isDragging = true;
+    const handleMove = (clientX) => { if (!isDragging || unlocked) return; updateSlider(clientX); };
+    const handleEnd = () => isDragging = false;
+
+    sliderHandle.addEventListener('mousedown', e => handleStart(e.clientX));
+    document.addEventListener('mousemove', e => handleMove(e.clientX));
+    document.addEventListener('mouseup', handleEnd);
+
+    sliderHandle.addEventListener('touchstart', e => { e.preventDefault(); handleStart(e.touches[0].clientX); });
+    document.addEventListener('touchmove', e => { if (isDragging && !unlocked) e.preventDefault(); handleMove(e.touches[0].clientX); }, { passive: false });
+    document.addEventListener('touchend', handleEnd);
+
+    // === Efectos interactivos ===
+    function createKiss(x, y) {
+      const k = document.createElement('div');
+      k.innerHTML = '💋';
+      k.style.cssText = `position:absolute;left:${x-12}px;top:${y-12}px;font-size:22px;opacity:1;animation:floatKiss 4.5s forwards;pointer-events:none;z-index:5;`;
+      document.body.appendChild(k);
+      setTimeout(() => k.remove(), 4500);
+    }
+
+    function createFlower(x, y) {
+      const f = document.createElement('div');
+      f.innerHTML = ['🌷', '🌹', '🌸', '🌺', '💐'][Math.floor(Math.random() * 5)];
+      f.style.cssText = `position:absolute;left:${x-16}px;top:${y-16}px;font-size:30px;animation:growFlower 1.6s forwards;pointer-events:none;z-index:5;`;
+      document.body.appendChild(f);
+      setTimeout(() => f.remove(), 3000);
+    }
+
+    const handleInteraction = (x, y) => {
+      const canvas = document.getElementById('drawingCanvas');
+      const rect = canvas.getBoundingClientRect();
+      const inCanvas = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      const inSlider = x >= sliderContainer.getBoundingClientRect().left && x <= sliderContainer.getBoundingClientRect().right;
+      if (!inCanvas && !inSlider) {
+        createKiss(x, y);
+        createFlower(x, y);
+      }
+    };
+
+    document.addEventListener('click', e => handleInteraction(e.clientX, e.clientY));
+    document.addEventListener('touchstart', e => {
+      if (!e.target.closest('#sliderHandle') && !e.target.closest('.action-btn')) {
+        const t = e.touches[0];
+        handleInteraction(t.clientX, t.clientY);
+      }
+    });
+    document.addEventListener('gesturestart', e => e.preventDefault());
+
+    // === Lienzo ===
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    const previewImage = document.getElementById('previewImage');
+    const instructions = document.getElementById('instructions');
+    const clearBtn = document.getElementById('clearBtn');
+    const viewBtn = document.getElementById('viewBtn');
+    const whatsappBtn = document.getElementById('whatsappBtn');
+
+    function resizeCanvas() {
+      const displayWidth = canvas.clientWidth;
+      const displayHeight = canvas.clientHeight;
+      const scale = window.devicePixelRatio || 1;
+      canvas.width = displayWidth * scale;
+      canvas.height = displayHeight * scale;
+      ctx.scale(scale, scale);
+      ctx.lineWidth = 3.5 * scale;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#d81b60';
+    }
+
+    window.addEventListener('load', resizeCanvas);
+    window.addEventListener('resize', resizeCanvas);
+
+    let isDrawing = false;
+    let lastX = 0, lastY = 0;
+
+    const getPos = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX || e.touches?.[0]?.clientX || 0) - rect.left,
+        y: (e.clientY || e.touches?.[0]?.clientY || 0) - rect.top
+      };
+    };
+
+    const startDraw = (e) => { isDrawing = true; ({x: lastX, y: lastY} = getPos(e)); };
+    const draw = (e) => {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const {x, y} = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      [lastX, lastY] = [x, y];
+    };
+    const stopDraw = () => isDrawing = false;
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDraw);
+    canvas.addEventListener('mouseout', stopDraw);
+
+    canvas.addEventListener('touchstart', startDraw);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDraw);
+
+    // Botón de borrar
+    clearBtn.addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      previewImage.style.display = 'none';
+      instructions.style.display = 'block';
+    });
+
+    // Botón de ver flor
+    viewBtn.addEventListener('click', () => {
+      const dataUrl = canvas.toDataURL('image/png');
+      previewImage.src = dataUrl;
+      previewImage.style.display = 'block';
+      instructions.style.display = 'block';
+    });
+
+    // Botón de WhatsApp
+    whatsappBtn.addEventListener('click', () => {
+      const message = '¡Hola Facy! 🌸 Acabo de dibujar una flor para ti en el jardín de amor. Te la envío ahora. 💖';
+      const url = `https://wa.me/50661182233?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    });
+  </script>
+
+  <style>
+    @keyframes floatKiss {
+      to { transform: translateY(-100vh) rotate(15deg); opacity: 0; }
+    }
+    @keyframes growFlower {
+      0% { transform: scale(0.1); opacity: 0; }
+      70% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</body>
+</html>
